@@ -1,9 +1,13 @@
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Step1_Backend.Helpers;
+using Step1_Backend.Mapper;
 using Step1_Backend.Models;
+using Step1_Backend.Services.AuthService;
 using System.Text;
 
 namespace Step1_Backend
@@ -18,11 +22,11 @@ namespace Step1_Backend
 
             builder.Services.AddControllers();
             builder.Services.AddDbContext<AppDbContext>(
-    options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
             );
             builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
-
+            builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingConfig>());
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -38,12 +42,42 @@ namespace Step1_Backend
                {
                    IssuerSigningKey = secrectKey,
                    ValidateAudience = true,
+                   ValidateIssuer = true,
                    ValidateLifetime = true,
                    ValidateIssuerSigningKey = true,
                    ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
                    ValidAudience = builder.Configuration["JwtSettings:Audience"],
                };
             });
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opts =>
+            {
+                opts.Password.RequireDigit = true;
+                opts.Password.RequireUppercase = true;
+                opts.Password.RequireNonAlphanumeric = true;
+                opts.Password.RequiredLength = 7;
+            })
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
+
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    var errors = context.ModelState
+                        .Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList();
+
+                    return new BadRequestObjectResult(
+                        Result.Failure(errors)
+                    );
+                };
+            });
+
+            builder.Services.AddScoped<IAuthService, AuthService>();
+
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
