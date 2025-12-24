@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Step1_Backend.DTOs.AuthDTOs;
+using Step1_Backend.DTOs.TrainerDTOs;
 using Step1_Backend.Models;
 
 namespace Step1_Backend.Mapper
@@ -9,6 +10,10 @@ namespace Step1_Backend.Mapper
         public MappingConfig()
         {
             CreateMap<RegisterDTO, ApplicationUser>().ReverseMap();
+            CreateMap<AddTrainerDTO, Trainer>().ReverseMap();
+            CreateMap<UpdateTrainerDTO, Trainer>().ReverseMap();
+            CreateMap<TrainerHomeCardDTO, Trainer>().ReverseMap();
+            CreateMap<RateTrainerDTO, Trainer>().ReverseMap();
         }
     }
 }

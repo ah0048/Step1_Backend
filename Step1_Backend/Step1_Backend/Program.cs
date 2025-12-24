@@ -7,7 +7,11 @@ using Microsoft.IdentityModel.Tokens;
 using Step1_Backend.Helpers;
 using Step1_Backend.Mapper;
 using Step1_Backend.Models;
+using Step1_Backend.Repositories.TrainerRepository;
 using Step1_Backend.Services.AuthService;
+using Step1_Backend.Services.PhotoSercvice;
+using Step1_Backend.Services.TrainerService;
+using Step1_Backend.UnitOfWorks;
 using System.Text;
 
 namespace Step1_Backend
@@ -76,7 +80,14 @@ namespace Step1_Backend
                 };
             });
 
+            // Repository layer DI
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<ITrainerRepository, TrainerRepository>();
+
+            // Service layer DI
+            builder.Services.AddScoped<IPhotoService, PhotoService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<ITrainerService, TrainerService>();
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
