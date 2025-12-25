@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Step1_Backend.Helpers;
 using Step1_Backend.Models;
+using System.Runtime.InteropServices;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 
@@ -17,6 +18,21 @@ namespace Step1_Backend.Services.TelegramService
         }
         public async Task SendTelegramNotification(Reservation reservation)
         {
+            // 1. Get the Egypt Time Zone
+            TimeZoneInfo egyptZone;
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                egyptZone = TimeZoneInfo.FindSystemTimeZoneById("Egypt Standard Time");
+            }
+            else
+            {
+                egyptZone = TimeZoneInfo.FindSystemTimeZoneById("Africa/Cairo");
+            }
+
+            // 2. Convert the UTC CreationDate to Egypt Time
+            var egyptTime = TimeZoneInfo.ConvertTimeFromUtc(reservation.CreationDate, egyptZone);
+
             var message = $"🔔 *New Reservation*\n\n" +
               $"Parent Name: {reservation.ParentName}\n" +
               $"Child Name: {reservation.ChildName}\n" +
@@ -24,7 +40,7 @@ namespace Step1_Backend.Services.TelegramService
               $"Phone Number: {reservation.PhoneNumber}\n" +
               $"Email: {reservation.Email}\n" +
               $"Trainer Name: {reservation.Trainer.ArabicName}\n" +
-              $"Created at: {reservation.CreationDate:dd/MM/yyyy h:m tt}";
+              $"Created at: {egyptTime:dd/MM/yyyy hh:mm:ss tt}";
 
             await _client.SendMessage(
                 chatId: _settings.ChatId,

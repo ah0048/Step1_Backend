@@ -1,4 +1,5 @@
 ﻿using Step1_Backend.Models;
+using Step1_Backend.Repositories.ReservationRepository;
 using Step1_Backend.Repositories.TrainerRepository;
 
 namespace Step1_Backend.UnitOfWorks
@@ -7,6 +8,7 @@ namespace Step1_Backend.UnitOfWorks
     {
         private readonly AppDbContext _dbContext;
         private ITrainerRepository? trainerRepo;
+        private IReservationRepository? reservationRepo;
 
         public UnitOfWork(AppDbContext dbContext)
         {
@@ -23,6 +25,19 @@ namespace Step1_Backend.UnitOfWorks
                 }
                 ;
                 return trainerRepo;
+            }
+        }
+
+        public IReservationRepository ReservationRepo
+        {
+            get
+            {
+                if (reservationRepo == null)
+                {
+                    reservationRepo = new ReservationRepository(_dbContext);
+                }
+    ;
+                return reservationRepo;
             }
         }
 

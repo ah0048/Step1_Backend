@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Step1_Backend.DTOs.AuthDTOs;
+using Step1_Backend.DTOs.ReservationDTOs;
 using Step1_Backend.DTOs.TrainerDTOs;
 using Step1_Backend.Models;
 
@@ -14,6 +15,7 @@ namespace Step1_Backend.Mapper
             CreateMap<UpdateTrainerDTO, Trainer>().ReverseMap();
             CreateMap<TrainerHomeCardDTO, Trainer>().ReverseMap();
             CreateMap<RateTrainerDTO, Trainer>().ReverseMap();
+            CreateMap<AddReservationDTO, Reservation>().ReverseMap();
         }
     }
 }
