@@ -30,6 +30,7 @@ namespace Step1_Backend
             );
             builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+            builder.Services.Configure<TelegramSettings>(builder.Configuration.GetSection("TelegramSettings"));
             builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingConfig>());
             builder.Services.AddAuthentication(options =>
             {
