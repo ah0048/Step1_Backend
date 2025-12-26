@@ -23,15 +23,16 @@ namespace Step1_Backend.Services.ReservationService
         public async Task<Result<string>> AddNewReservation(AddReservationDTO addReservationDTO)
         {
             Reservation newReservation = _mapper.Map<Reservation>(addReservationDTO);
+            var trainer = await _unit.TrainerRepo.GetByIdAsync(newReservation.TrainerId);
+                if (trainer == null)
+                    return Result<string>.Failure("the Selected Trainer is not found");
+
+            newReservation.Trainer = trainer;
             try
             {
                 newReservation.CreationDate = DateTime.UtcNow;
                 await _unit.ReservationRepo.AddAsync(newReservation);
                 await _unit.SaveAsync();
-
-                var trainer = await _unit.TrainerRepo.GetByIdAsync(newReservation.TrainerId);
-                newReservation.Trainer = trainer;
-
                 await _telegramService.SendTelegramNotification(newReservation);
                 return Result<string>.Success("Your Reservation was created successfully !!");
             }
