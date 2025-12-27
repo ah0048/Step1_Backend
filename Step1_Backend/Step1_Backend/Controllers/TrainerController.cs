@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Step1_Backend.DTOs.AuthDTOs;
 using Step1_Backend.DTOs.TrainerDTOs;
@@ -28,6 +29,7 @@ namespace Step1_Backend.Controllers
             return BadRequest(result);
         }
 
+        [Authorize]
         [HttpPost("add")]
         public async Task<IActionResult> AddNewTrainer([FromForm] AddTrainerDTO addTrainerDTO)
         {
@@ -38,6 +40,7 @@ namespace Step1_Backend.Controllers
             return BadRequest(result);
         }
 
+        [Authorize]
         [HttpPut("edit")]
         public async Task<IActionResult> UpdateTrainer([FromForm] UpdateTrainerDTO updateTrainerDTO)
         {
@@ -48,6 +51,7 @@ namespace Step1_Backend.Controllers
             return BadRequest(result);
         }
 
+        [Authorize]
         [HttpDelete("delete/{TrainerId}")]
         public async Task<IActionResult> DeleteTrainer(int TrainerId)
         {
