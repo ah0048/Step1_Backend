@@ -35,6 +35,17 @@ namespace Step1_Backend
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
             builder.Services.Configure<TelegramSettings>(builder.Configuration.GetSection("TelegramSettings"));
             builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingConfig>());
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opts =>
+            {
+                opts.Password.RequireDigit = true;
+                opts.Password.RequireUppercase = true;
+                opts.Password.RequireNonAlphanumeric = true;
+                opts.Password.RequiredLength = 7;
+            })
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
+
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -57,16 +68,6 @@ namespace Step1_Backend
                    ValidAudience = builder.Configuration["JwtSettings:Audience"],
                };
             });
-
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opts =>
-            {
-                opts.Password.RequireDigit = true;
-                opts.Password.RequireUppercase = true;
-                opts.Password.RequireNonAlphanumeric = true;
-                opts.Password.RequiredLength = 7;
-            })
-            .AddEntityFrameworkStores<AppDbContext>()
-            .AddDefaultTokenProviders();
 
             builder.Services.Configure<ApiBehaviorOptions>(options =>
             {
