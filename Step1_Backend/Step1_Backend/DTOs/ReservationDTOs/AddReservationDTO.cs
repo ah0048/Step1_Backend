@@ -33,5 +33,8 @@ namespace Step1_Backend.DTOs.ReservationDTOs
 
         [Required]
         public int TrainerId { get; set; }
+        [Required]
+        [Range(1, 3, ErrorMessage = "Please select a valid subscription plan.")]
+        public SubscriptionPlan Subscription { get; set; }
     }
 }

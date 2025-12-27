@@ -22,5 +22,18 @@ namespace Step1_Backend.Models
         [ForeignKey(nameof(Trainer))]
         public int TrainerId { get; set; }
         public virtual Trainer Trainer { get; set; }
+        public SubscriptionPlan Subscription { get; set; }
+    }
+
+    public enum SubscriptionPlan
+    {
+        [Display(Name = "تاسيس عربي")]
+        ArabicFoundation = 1,
+
+        [Display(Name = "تاسيس انجليزي")]
+        EnglishFoundation = 2,
+
+        [Display(Name = "تنمية مهارات")]
+        SkillsDevelopment = 3
     }
 }

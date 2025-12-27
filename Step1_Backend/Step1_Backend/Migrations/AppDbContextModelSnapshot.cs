@@ -250,6 +250,9 @@ namespace Step1_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Subscription")
+                        .HasColumnType("int");
+
                     b.Property<int>("TrainerId")
                         .HasColumnType("int");
 
