@@ -7,9 +7,11 @@ using Microsoft.IdentityModel.Tokens;
 using Step1_Backend.Helpers;
 using Step1_Backend.Mapper;
 using Step1_Backend.Models;
+using Step1_Backend.Repositories.PackageRepository;
 using Step1_Backend.Repositories.ReservationRepository;
 using Step1_Backend.Repositories.TrainerRepository;
 using Step1_Backend.Services.AuthService;
+using Step1_Backend.Services.PackageService;
 using Step1_Backend.Services.PhotoSercvice;
 using Step1_Backend.Services.ReservationService;
 using Step1_Backend.Services.TelegramService;
@@ -89,6 +91,7 @@ namespace Step1_Backend
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<ITrainerRepository, TrainerRepository>();
             builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+            builder.Services.AddScoped<IPackageRepository, PackageRepository>();
 
             // Service layer DI
             builder.Services.AddScoped<IPhotoService, PhotoService>();
@@ -96,6 +99,7 @@ namespace Step1_Backend
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITrainerService, TrainerService>();
             builder.Services.AddScoped<IReservationService, ReservationService>();
+            builder.Services.AddScoped<IPackageService, PackageService>();
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
