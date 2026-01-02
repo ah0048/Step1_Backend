@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Step1_Backend.DTOs.AuthDTOs;
 using Step1_Backend.DTOs.PackageDTOs;
+using Step1_Backend.DTOs.PaymentOrderDTOs;
 using Step1_Backend.DTOs.ReservationDTOs;
 using Step1_Backend.DTOs.TrainerDTOs;
 using Step1_Backend.Models;
@@ -20,6 +21,7 @@ namespace Step1_Backend.Mapper
             CreateMap<AddPackageDTO, Package>().ReverseMap();
             CreateMap<UpdatePackageDTO, Package>().ReverseMap();
             CreateMap<PackageHomeCardDTO, Package>().ReverseMap();
+            CreateMap<PlaceOrderDTO, PaymentOrder>().ReverseMap();
         }
     }
 }

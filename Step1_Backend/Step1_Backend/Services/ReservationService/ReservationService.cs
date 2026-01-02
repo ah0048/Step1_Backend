@@ -33,7 +33,7 @@ namespace Step1_Backend.Services.ReservationService
                 newReservation.CreationDate = DateTime.UtcNow;
                 await _unit.ReservationRepo.AddAsync(newReservation);
                 await _unit.SaveAsync();
-                await _telegramService.SendTelegramNotification(newReservation);
+                await _telegramService.SendReservationNotification(newReservation);
                 return Result<string>.Success("Your Reservation was created successfully !!");
             }
             catch (Exception ex)

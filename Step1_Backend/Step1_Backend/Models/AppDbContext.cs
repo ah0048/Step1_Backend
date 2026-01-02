@@ -8,6 +8,7 @@ namespace Step1_Backend.Models
         public virtual DbSet<Trainer> Trainers { get; set; }
         public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<Package> Packages { get; set; }
+        public virtual DbSet<PaymentOrder> PaymentOrders { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     }
 }

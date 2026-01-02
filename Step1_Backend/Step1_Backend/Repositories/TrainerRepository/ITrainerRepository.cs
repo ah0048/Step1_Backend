@@ -5,5 +5,6 @@ namespace Step1_Backend.Repositories.TrainerRepository
 {
     public interface ITrainerRepository : IGenericRepository<Trainer>
     {
+        Task<List<Trainer>> GetAllWithReservationsAsync();
     }
 }

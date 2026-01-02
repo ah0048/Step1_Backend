@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Step1_Backend.DTOs.PackageDTOs;
+using Step1_Backend.DTOs.PaymentOrderDTOs;
+using Step1_Backend.DTOs.ReservationDTOs;
 using Step1_Backend.DTOs.TrainerDTOs;
 using Step1_Backend.Helpers;
 using Step1_Backend.Models;
 using Step1_Backend.Services.PhotoSercvice;
+using Step1_Backend.Services.TelegramService;
 using Step1_Backend.UnitOfWorks;
 
 namespace Step1_Backend.Services.PackageService
@@ -13,11 +16,13 @@ namespace Step1_Backend.Services.PackageService
         private readonly IUnitOfWork _unit;
         private readonly IMapper _mapper;
         private readonly IPhotoService _photoService;
-        public PackageService(IUnitOfWork unit, IMapper mapper, IPhotoService photoService)
+        private readonly ITelegramService _telegramService;
+        public PackageService(IUnitOfWork unit, IMapper mapper, IPhotoService photoService, ITelegramService telegramService)
         {
             _unit = unit;
             _mapper = mapper;
             _photoService = photoService;
+            _telegramService = telegramService;
         }
         public async Task<Result<string>> AddNewPackage(AddPackageDTO addPackageDTO)
         {
@@ -92,6 +97,29 @@ namespace Step1_Backend.Services.PackageService
             catch (Exception ex)
             {
                 return Result<List<PackageHomeCardDTO>>.Failure($"An error occurred while fetching packages data: {ex.Message}");
+            }
+        }
+
+        public async Task<Result<string>> PlaceOrder(PlaceOrderDTO placeOrderDTO)
+        {
+            PaymentOrder newPaymentOrder = _mapper.Map<PaymentOrder>(placeOrderDTO);
+            var package = await _unit.PackageRepo.GetByIdAsync(placeOrderDTO.PackageId);
+            if (package == null)
+                return Result<string>.Failure("the Selected Package is not found");
+
+            newPaymentOrder.Package = package;
+            try
+            {
+                newPaymentOrder.CreationDate = DateTime.UtcNow;
+                newPaymentOrder.OrderStatus = PaymentStatus.Pending;
+                await _unit.PaymentOrderRepo.AddAsync(newPaymentOrder);
+                await _unit.SaveAsync();
+                await _telegramService.SendPaymentOrderNotification(newPaymentOrder);
+                return Result<string>.Success("Your Order was placed successfully !!");
+            }
+            catch (Exception ex)
+            {
+                return Result<string>.Failure($"An error occurred while creating your Order: {ex.Message}");
             }
         }
 

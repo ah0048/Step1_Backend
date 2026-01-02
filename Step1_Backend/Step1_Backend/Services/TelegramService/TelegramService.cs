@@ -16,7 +16,41 @@ namespace Step1_Backend.Services.TelegramService
             _settings = config.Value;
             _client = new TelegramBotClient(_settings.Token);
         }
-        public async Task SendTelegramNotification(Reservation reservation)
+
+        public async Task SendPaymentOrderNotification(PaymentOrder paymentOrder)
+        {
+            // 1. Get the Egypt Time Zone
+            TimeZoneInfo egyptZone;
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                egyptZone = TimeZoneInfo.FindSystemTimeZoneById("Egypt Standard Time");
+            }
+            else
+            {
+                egyptZone = TimeZoneInfo.FindSystemTimeZoneById("Africa/Cairo");
+            }
+
+            // 2. Convert the UTC CreationDate to Egypt Time
+            var egyptTime = TimeZoneInfo.ConvertTimeFromUtc(paymentOrder.CreationDate, egyptZone);
+
+            var message = $"🔔 *New Payment Order*\n\n" +
+              $"Parent Name: {paymentOrder.ParentName}\n" +
+              $"Child Name: {paymentOrder.ChildName}\n" +
+              $"Phone Number: {paymentOrder.PhoneNumber}\n" +
+              $"Email: {paymentOrder.Email}\n" +
+              $"Package: {paymentOrder.Package.Title}\n" +
+              $"Payment Status: {paymentOrder.OrderStatus.ToString()}\n" +
+              $"Created at: {egyptTime:dd/MM/yyyy hh:mm:ss tt}";
+
+            await _client.SendMessage(
+                chatId: _settings.ChatId,
+                text: message,
+                parseMode: ParseMode.Markdown
+            );
+        }
+
+        public async Task SendReservationNotification(Reservation reservation)
         {
             // 1. Get the Egypt Time Zone
             TimeZoneInfo egyptZone;

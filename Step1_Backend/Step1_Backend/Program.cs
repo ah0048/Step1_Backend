@@ -8,9 +8,11 @@ using Step1_Backend.Helpers;
 using Step1_Backend.Mapper;
 using Step1_Backend.Models;
 using Step1_Backend.Repositories.PackageRepository;
+using Step1_Backend.Repositories.PaymentOrderRepository;
 using Step1_Backend.Repositories.ReservationRepository;
 using Step1_Backend.Repositories.TrainerRepository;
 using Step1_Backend.Services.AuthService;
+using Step1_Backend.Services.DashboardService;
 using Step1_Backend.Services.PackageService;
 using Step1_Backend.Services.PhotoSercvice;
 using Step1_Backend.Services.ReservationService;
@@ -36,6 +38,7 @@ namespace Step1_Backend
             builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
             builder.Services.Configure<TelegramSettings>(builder.Configuration.GetSection("TelegramSettings"));
+            builder.Services.Configure<PaymentSettings>(builder.Configuration.GetSection("PaymentSettings"));
             builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingConfig>());
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opts =>
@@ -92,6 +95,7 @@ namespace Step1_Backend
             builder.Services.AddScoped<ITrainerRepository, TrainerRepository>();
             builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
             builder.Services.AddScoped<IPackageRepository, PackageRepository>();
+            builder.Services.AddScoped<IPaymentOrderRepository, PaymentOrderRepository>();
 
             // Service layer DI
             builder.Services.AddScoped<IPhotoService, PhotoService>();
@@ -100,6 +104,7 @@ namespace Step1_Backend
             builder.Services.AddScoped<ITrainerService, TrainerService>();
             builder.Services.AddScoped<IReservationService, ReservationService>();
             builder.Services.AddScoped<IPackageService, PackageService>();
+            builder.Services.AddScoped<IDashboardService, DashboardService>();
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();

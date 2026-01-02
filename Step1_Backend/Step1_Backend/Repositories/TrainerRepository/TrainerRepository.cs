@@ -40,6 +40,13 @@ namespace Step1_Backend.Repositories.TrainerRepository
             return await _dbContext.Trainers.OrderBy(t => t.EnglishName).ToListAsync();
         }
 
+        public async Task<List<Trainer>> GetAllWithReservationsAsync()
+        {
+            return await _dbContext.Trainers
+                    .Include(t => t.Reservations)
+                    .ToListAsync();
+        }
+
         public async Task<Trainer?> GetByIdAsync(int id)
         {
             return await _dbContext.Trainers.FindAsync(id);

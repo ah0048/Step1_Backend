@@ -20,6 +20,6 @@ namespace Step1_Backend.Models
         public float Price { get; set; }
         [Required]
         public int CustomerCount { get; set; }
-
+        public ICollection<PaymentOrder> paymentOrders { get; set; }
     }
 }

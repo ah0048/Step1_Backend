@@ -1,4 +1,5 @@
 ﻿using Step1_Backend.Repositories.PackageRepository;
+using Step1_Backend.Repositories.PaymentOrderRepository;
 using Step1_Backend.Repositories.ReservationRepository;
 using Step1_Backend.Repositories.TrainerRepository;
 
@@ -9,6 +10,7 @@ namespace Step1_Backend.UnitOfWorks
         ITrainerRepository TrainerRepo { get; }
         IReservationRepository ReservationRepo { get; }
         IPackageRepository PackageRepo { get; }
+        IPaymentOrderRepository PaymentOrderRepo { get; }
         Task SaveAsync();
         void Dispose();
     }

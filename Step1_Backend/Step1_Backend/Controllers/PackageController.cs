@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Step1_Backend.DTOs.PackageDTOs;
+using Step1_Backend.DTOs.PaymentOrderDTOs;
 using Step1_Backend.DTOs.TrainerDTOs;
 using Step1_Backend.Services.PackageService;
 using Step1_Backend.Services.TrainerService;
@@ -33,6 +34,16 @@ namespace Step1_Backend.Controllers
         public async Task<IActionResult> AddNewPackage([FromForm] AddPackageDTO addPackageDTO)
         {
             var result = await _packageService.AddNewPackage(addPackageDTO);
+            if (result.IsSuccess)
+                return Created(string.Empty, result);
+
+            return BadRequest(result);
+        }
+
+        [HttpPost("place-order")]
+        public async Task<IActionResult> PlaceNewOrder([FromBody] PlaceOrderDTO placeOrderDTO)
+        {
+            var result = await _packageService.PlaceOrder(placeOrderDTO);
             if (result.IsSuccess)
                 return Created(string.Empty, result);
 

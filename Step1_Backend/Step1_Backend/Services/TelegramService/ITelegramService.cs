@@ -4,6 +4,7 @@ namespace Step1_Backend.Services.TelegramService
 {
     public interface ITelegramService
     {
-        Task SendTelegramNotification(Reservation reservation);
+        Task SendReservationNotification(Reservation reservation);
+        Task SendPaymentOrderNotification(PaymentOrder paymentOrder);
     }
 }

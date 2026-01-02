@@ -1,5 +1,6 @@
 ﻿using Step1_Backend.Models;
 using Step1_Backend.Repositories.PackageRepository;
+using Step1_Backend.Repositories.PaymentOrderRepository;
 using Step1_Backend.Repositories.ReservationRepository;
 using Step1_Backend.Repositories.TrainerRepository;
 
@@ -11,6 +12,7 @@ namespace Step1_Backend.UnitOfWorks
         private ITrainerRepository? trainerRepo;
         private IReservationRepository? reservationRepo;
         private IPackageRepository? packageRepo;
+        private IPaymentOrderRepository? paymentOrderRepo;
 
         public UnitOfWork(AppDbContext dbContext)
         {
@@ -50,6 +52,18 @@ namespace Step1_Backend.UnitOfWorks
                     packageRepo = new PackageRepository(_dbContext);
                 }
                 return packageRepo;
+            }
+        }
+
+        public IPaymentOrderRepository PaymentOrderRepo
+        {
+            get
+            {
+                if (paymentOrderRepo == null)
+                {
+                    paymentOrderRepo = new PaymentOrderRepository(_dbContext);
+                }
+                return paymentOrderRepo;
             }
         }
 

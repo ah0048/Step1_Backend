@@ -44,6 +44,13 @@ namespace Step1_Backend.Repositories.PackageRepository
             return await _dbContext.Packages.OrderByDescending(p=> p.CustomerCount).ToListAsync();
         }
 
+        public async Task<List<Package>> GetAllWithOrdersAsync()
+        {
+            return await _dbContext.Packages
+                .Include(p => p.paymentOrders)
+                .ToListAsync();
+        }
+
         public async Task<Package?> GetByIdAsync(int id)
         {
             return await _dbContext.Packages.FindAsync(id);

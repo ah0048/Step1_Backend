@@ -5,5 +5,7 @@ namespace Step1_Backend.Repositories.PackageRepository
     public interface IPackageRepository:IGenericRepository<Package>
     {
         Task<List<Package>> GetAllSortedAsync();
+        Task<List<Package>> GetAllWithOrdersAsync();
+
     }
 }
