@@ -40,7 +40,7 @@ namespace Step1_Backend.Services.TelegramService
               $"Phone Number: {paymentOrder.PhoneNumber}\n" +
               $"Email: {paymentOrder.Email}\n" +
               $"Package: {paymentOrder.Package.Title}\n" +
-              $"Payment Status: {paymentOrder.OrderStatus.ToString()}\n" +
+              //$"Payment Status: {paymentOrder.OrderStatus.ToString()}\n" +
               $"Created at: {egyptTime:dd/MM/yyyy hh:mm:ss tt}";
 
             await _client.SendMessage(
