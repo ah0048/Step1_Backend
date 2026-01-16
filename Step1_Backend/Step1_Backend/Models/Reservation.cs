@@ -22,7 +22,8 @@ namespace Step1_Backend.Models
         [ForeignKey(nameof(Trainer))]
         public int TrainerId { get; set; }
         public virtual Trainer Trainer { get; set; }
-        public SubscriptionPlan Subscription { get; set; }
+        public SubscriptionPlan subscriptionPlan { get; set; }
+        public SubscriptionInterval subscriptionInterval { get; set; }
     }
 
     public enum SubscriptionPlan
@@ -35,5 +36,16 @@ namespace Step1_Backend.Models
 
         [Display(Name = "تنمية مهارات")]
         SkillsDevelopment = 3
+    }
+    public enum SubscriptionInterval
+    {
+        [Display(Name = "شهري")]
+        Monthly = 1,
+
+        [Display(Name = "ربع سنوي")]
+        Quarterly = 2,
+
+        [Display(Name = "سنوي")]
+        Yearly = 3
     }
 }

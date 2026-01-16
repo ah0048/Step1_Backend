@@ -67,11 +67,19 @@ namespace Step1_Backend.Services.TelegramService
             // 2. Convert the UTC CreationDate to Egypt Time
             var egyptTime = TimeZoneInfo.ConvertTimeFromUtc(reservation.CreationDate, egyptZone);
 
-            string planArabic = reservation.Subscription switch
+            string planArabicPlan = reservation.subscriptionPlan switch
             {
                 SubscriptionPlan.ArabicFoundation => "تاسيس عربي",
                 SubscriptionPlan.EnglishFoundation => "تاسيس انجليزي",
                 SubscriptionPlan.SkillsDevelopment => "تنمية مهارات",
+                _ => "غير محدد"
+            };
+
+            string planArabicInterval = reservation.subscriptionInterval switch
+            {
+                SubscriptionInterval.Monthly => "شهري",
+                SubscriptionInterval.Quarterly => "ربع سنوي",
+                SubscriptionInterval.Yearly => "سنوي",
                 _ => "غير محدد"
             };
 
@@ -82,7 +90,8 @@ namespace Step1_Backend.Services.TelegramService
               $"Phone Number: {reservation.PhoneNumber}\n" +
               $"Email: {reservation.Email}\n" +
               $"Trainer Name: {reservation.Trainer.ArabicName}\n" +
-              $"Subscription Plan: {planArabic}\n" +
+              $"Subscription Plan: {planArabicPlan}\n" +
+              $"Subscription Interval: {planArabicInterval}\n" +
               $"Created at: {egyptTime:dd/MM/yyyy hh:mm:ss tt}";
 
             await _client.SendMessage(
