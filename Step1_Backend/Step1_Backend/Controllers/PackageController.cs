@@ -28,7 +28,16 @@ namespace Step1_Backend.Controllers
 
             return BadRequest(result);
         }
+        [Authorize]
+        [HttpGet("all-dashboard")]
+        public async Task<IActionResult> GetAllPackagesDashboard()
+        {
+            var result = await _packageService.GetPackageListDashboard();
+            if (result.IsSuccess)
+                return Ok(result);
 
+            return BadRequest(result);
+        }
         [Authorize]
         [HttpPost("add")]
         public async Task<IActionResult> AddNewPackage([FromForm] AddPackageDTO addPackageDTO)

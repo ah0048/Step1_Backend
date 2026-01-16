@@ -10,5 +10,6 @@ namespace Step1_Backend.Services.TrainerService
         Task<Result<string>> DeleteTrainer(int TrainerId);
         Task<Result<string>> RateTrainer(RateTrainerDTO rateTrainerDTO);
         Task<Result<List<TrainerHomeCardDTO>>> GetTrainerList();
+        Task<Result<List<TrainerDashboardCardDTO>>> GetTrainerListDashboard();
     }
 }

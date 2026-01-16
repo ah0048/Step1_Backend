@@ -22,21 +22,15 @@ namespace Step1_Backend.Services.DashboardService
                 var data = new DashboardDataDTO();
 
                 // 1. Get Trainers and count their reservations
-                var trainers = await _unit.TrainerRepo.GetAllWithReservationsAsync();
-                data.TrainerStats = trainers.Select(t => new TrainerStatDTO
-                {
-                    Name = t.ArabicName,
-                    ReservationCount = t.Reservations?.Count ?? 0
-                }).ToList();
+                var trainers = await _unit.TrainerRepo.GetAllAsync();
+                var reservations = await _unit.ReservationRepo.GetAllAsync();
+                var packages = await _unit.PackageRepo.GetAllAsync();
+                var orders = await _unit.PaymentOrderRepo.GetAllAsync();
 
-                // 2. Get Packages and count their payment orders
-                var packages = await _unit.PackageRepo.GetAllWithOrdersAsync();
-                data.PackageStats = packages.Select(p => new PackageStatDTO
-                {
-                    Title = p.Title,
-                    OrderCount = p.paymentOrders?.Count ?? 0
-                }).ToList();
-
+                data.TrainerCount = trainers.Count;
+                data.ReservationCount = reservations.Count;
+                data.PackageCount = packages.Count;
+                data.OrderCount = orders.Count;
                 return Result<DashboardDataDTO>.Success(data);
             }
             catch (Exception ex)

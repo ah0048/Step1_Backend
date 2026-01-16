@@ -109,6 +109,18 @@ namespace Step1_Backend
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -119,6 +131,8 @@ namespace Step1_Backend
             }
 
             app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseCors("AllowFrontend");
             app.UseAuthentication();
             app.UseAuthorization();
 

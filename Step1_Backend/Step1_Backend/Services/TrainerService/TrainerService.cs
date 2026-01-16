@@ -96,6 +96,25 @@ namespace Step1_Backend.Services.TrainerService
             }
         }
 
+        public async Task<Result<List<TrainerDashboardCardDTO>>> GetTrainerListDashboard()
+        {
+            try
+            {
+                List<Trainer> trainerList = await _unit.TrainerRepo.GetAllWithReservationsAsync();
+                if (trainerList == null)
+                    return Result<List<TrainerDashboardCardDTO>>.Failure("No trainers were Found");
+                if (!trainerList.Any())
+                    return Result<List<TrainerDashboardCardDTO>>.Success(new List<TrainerDashboardCardDTO>());
+
+                List<TrainerDashboardCardDTO> trainerDashboardCards = _mapper.Map<List<TrainerDashboardCardDTO>>(trainerList);
+                return Result<List<TrainerDashboardCardDTO>>.Success(trainerDashboardCards);
+            }
+            catch (Exception ex)
+            {
+                return Result<List<TrainerDashboardCardDTO>>.Failure($"An error occurred while fetching trainers data: {ex.Message}");
+            }
+        }
+
         public async Task<Result<string>> RateTrainer(RateTrainerDTO rateTrainerDTO)
         {
             var trainer = await _unit.TrainerRepo.GetByIdAsync(rateTrainerDTO.TrainerId);

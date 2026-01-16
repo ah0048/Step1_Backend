@@ -28,6 +28,16 @@ namespace Step1_Backend.Controllers
 
             return BadRequest(result);
         }
+        [Authorize]
+        [HttpGet("all-dashboard")]
+        public async Task<IActionResult> GetAllTrainersDashboard()
+        {
+            var result = await _trainerService.GetTrainerListDashboard();
+            if (result.IsSuccess)
+                return Ok(result);
+
+            return BadRequest(result);
+        }
 
         [Authorize]
         [HttpPost("add")]

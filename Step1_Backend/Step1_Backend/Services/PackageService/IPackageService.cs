@@ -12,5 +12,6 @@ namespace Step1_Backend.Services.PackageService
         Task<Result<string>> DeletePackage(int PackageId);
         Task<Result<string>> PlaceOrder(PlaceOrderDTO placeOrderDTO);
         Task<Result<List<PackageHomeCardDTO>>> GetPackageList();
+        Task<Result<List<PackageDashboardCardDTO>>> GetPackageListDashboard();
     }
 }

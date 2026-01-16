@@ -100,6 +100,24 @@ namespace Step1_Backend.Services.PackageService
             }
         }
 
+        public async Task<Result<List<PackageDashboardCardDTO>>> GetPackageListDashboard()
+        {
+            try
+            {
+                List<Package> packageList = await _unit.PackageRepo.GetAllWithOrdersAsync();
+                if (packageList == null)
+                    return Result<List<PackageDashboardCardDTO>>.Failure("No packages were Found");
+                if (!packageList.Any())
+                    return Result<List<PackageDashboardCardDTO>>.Success(new List<PackageDashboardCardDTO>());
+
+                List<PackageDashboardCardDTO> packageDashboardCards = _mapper.Map<List<PackageDashboardCardDTO>>(packageList);
+                return Result<List<PackageDashboardCardDTO>>.Success(packageDashboardCards);
+            }
+            catch (Exception ex)
+            {
+                return Result<List<PackageDashboardCardDTO>>.Failure($"An error occurred while fetching packages data: {ex.Message}");
+            }
+        }
         public async Task<Result<string>> PlaceOrder(PlaceOrderDTO placeOrderDTO)
         {
             PaymentOrder newPaymentOrder = _mapper.Map<PaymentOrder>(placeOrderDTO);
