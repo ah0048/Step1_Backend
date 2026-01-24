@@ -8,7 +8,7 @@ namespace Step1_Backend.DTOs.PackageDTOs
         [Required]
         public int PackageId { get; set; }
         [AllowedImageExtensions(".jpg,.jpeg,.png,.gif,.bmp,.webp", 5)]
-        public IFormFile Picture { get; set; }
+        public IFormFile? Picture { get; set; }
         [MaxLength(200, ErrorMessage = "Package Title must be between less than 200 characters")]
         public string Title { get; set; }
 
